@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<!--<html lang="en"  xmlns:th="http://www.thymeleaf.org">-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<!--&lt;!&ndash; CSRF &ndash;&gt;-->
+		<!--<meta name="_csrf" th:content="${_csrf.token}"/>-->
+		<!--&lt;!&ndash; default header name is X-CSRF-TOKEN &ndash;&gt;-->
+		<!--<meta name="_csrf_header" th:content="${_csrf.headerName}"/>-->
+
+		<title>Welcome</title>
+		<!-- Bootstrap core CSS -->
+		<link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.1.3/css/bootstrap.css}" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link href="asserts/css/dashboard.css" th:href="@{/asserts/css/dashboard.css}" rel="stylesheet">
+		<style type="text/css">
+			/* Chart.js */
+			
+			@-webkit-keyframes chartjs-render-animation {
+				from {
+					opacity: 0.99
+				}
+				to {
+					opacity: 1
+				}
+			}
+			
+			@keyframes chartjs-render-animation {
+				from {
+					opacity: 0.99
+				}
+				to {
+					opacity: 1
+				}
+			}
+			
+			.chartjs-render-monitor {
+				-webkit-animation: chartjs-render-animation 0.001s;
+				animation: chartjs-render-animation 0.001s;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--顶部公共区域-->
+		<div th:replace="bar/topbar::topbar"></div>
+
+		<div class="container-fluid" id="mainContainer">
+			<div class="row">
+				<!--左边公共区域-->
+				<div th:replace="bar/admin_sidebar::sidebar(activeUri='user')"></div>
+
+				<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+					<h2>
+						<a class="btn btn-sm btn-primary" href="#" th:href="@{/admin/form}">添加用户</a>
+					</h2>
+					<div class="table-responsive" >
+						<table class="table table-striped table-sm">
+							<thead>
+								<tr>
+									<th >#</th>
+									<th>用户名</th>
+									<th>密码</th>
+									<th>权限</th>
+									<th>修改</th>
+									<th>删除</th>
+								</tr>
+							</thead>
+							<tbody>
+                               <tr th:each="user:${userModel.userList}">
+                                   <td th:text="${user.id}"></td>
+								    <td th:text="${user.username}"></td>
+								    <td th:text="${user.password}"></td>
+								    <td th:text="${user.authorities}"></td>
+								    <td>
+										<!--修改按钮-->
+										<a  class="btn btn-primary btn-sm" th:href="@{/admin/form/}+${user.id}">修改</a>
+										<!--删除按钮-->
+										<!--<button th:attr="del_uri	=@{/admin/}+${user.id}" class="btn btn-danger btn-sm deletebtn">删除</button>-->
+										<!--<a class="btn btn-danger btn-sm deletebtn" role="button" data-th-attr="userId=${user.id}">删除</a>-->
+									</td>
+								    <td>
+										<!--删除按钮-->
+										<form  th:action="@{/admin/}+${user.id}" method="post">
+											<input type="hidden" name="_method" value="delete">
+											<!--删除按钮-->
+											<button  type="submit" class="btn btn-danger btn-sm deletebtn">删除</button>
+										</form>
+									</td>
+							    </tr>
+							</tbody>
+						</table>
+					</div>
+				</main>
+				<!--<form id="deleteform"  method="post">-->
+					<!--<input type="hidden" name="_csrf" value="csrf">-->
+					<!--<input type="hidden" name="_method" value="delete">-->
+				<!--</form>-->
+			</div>
+		</div>
+
+		<!-- Bootstrap core JavaScript
+    ================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script type="text/javascript" src="asserts/js/jquery-3.2.1.slim.min.js" th:src="@{/webjars/jquery/3.0.0/jquery.js}"></script>
+		<script type="text/javascript" src="asserts/js/popper.min.js" th:src="@{/webjars/popper.js/1.14.3/popper.js}"></script>
+		<script type="text/javascript" src="asserts/js/bootstrap.min.js " th:src="@{/webjars/bootstrap/4.1.3/js/bootstrap.js}"></script>
+
+		<!-- Icons -->
+		<script type="text/javascript" src="asserts/js/feather.min.js" th:src="@{/asserts/js/feather.min.js}"></script>
+		<script>
+            feather.replace()
+		</script>
+
+		<!-- Graphs -->
+		<script type="text/javascript" src="asserts/js/Chart.min.js" th:src="@{/asserts/js/Chart.min.js}"></script>
+		<script>
+			var ctx = document.getElementById("myChart");
+			var myChart = new Chart(ctx, {
+				type: 'line',
+				data: {
+					labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+					datasets: [{
+						data: [15339, 21345, 18483, 24003, 23489, 24092, 12034],
+						lineTension: 0,
+						backgroundColor: 'transparent',
+						borderColor: '#007bff',
+						borderWidth: 4,
+						pointBackgroundColor: '#007bff'
+					}]
+				},
+				options: {
+					scales: {
+						yAxes: [{
+							ticks: {
+								beginAtZero: false
+							}
+						}]
+					},
+					legend: {
+						display: false,
+					}
+				}
+			});
+		</script>
+		<!--<script>-->
+            <!--$(".deletebtn").click(function () {-->
+                <!--$("#deleteform").attr("action",$(this).attr("del_uri")).submit();-->
+                <!--return false;-->
+            <!--})-->
+		<!--</script>-->
+		<!--<script>-->
+            <!--$(".deletebtn").click(function () {-->
+                <!--// 获取 CSRF Token-->
+                <!--var csrfToken = $("meta[name='_csrf']").attr("content");-->
+                <!--var csrfHeader = $("meta[name='_csrf_header']").attr("content");-->
+                <!--if(window.confirm("你确定要删除吗？")) {-->
+                    <!--$.ajax({-->
+                        <!--url: "/admin/" + $(this).attr("userId"),-->
+                        <!--type: 'DELETE',-->
+                        <!--beforeSend: function (request) {-->
+                            <!--request.setRequestHeader(csrfHeader, csrfToken); // 添加  CSRF Token-->
+                        <!--},-->
+                        <!--success: function (data) {-->
+                            <!--alert("删除成功！");-->
+                            <!--//成功了刷新界面-->
+                            <!--$("#mainContainer").html(data);-->
+                        <!--}-->
+                     <!--})-->
+                    <!--return true;-->
+                <!--}-->
+            <!--})-->
+		<!--</script>-->
+	</body>
+
+</html>

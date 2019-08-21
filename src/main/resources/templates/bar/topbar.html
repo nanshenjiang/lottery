@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<!--<html lang="en"  xmlns:th="http://www.thymeleaf.org">-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!--顶部公共区域-->
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0" th:fragment="topbar">
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#" sec:authentication="name">用户名</a>
+        <ul class="navbar-nav px-3">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" href="#" th:href="@{/}">登出</a>
+            </li>
+        </ul>
+    </nav>
+</body>
+</html>

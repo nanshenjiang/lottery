@@ -1,0 +1,45 @@
+spring:
+  datasource:
+    #用户名
+    username: root
+    #密码
+    password: 123456
+    #设置url，其中//后是连接的ip地址，3306是mysql的端口号，xxxx是建的数据库名
+    url: jdbc:mysql://192.168.88.1:3306/lottery
+    driver-class-name: com.mysql.jdbc.Driver
+
+  #进行其他设置
+  jpa:
+    hibernate:
+      #create根据定义的类自动生成表格（每次重启便会删除前次的表）
+      #除了create，常用的是update，第一次也会生成，但之后操作不会删表
+      ddl-auto: update
+    #在控制台看到sql语句，方便调试
+    show-sql: true
+
+  #redis的连接地址
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
+  #配置thymeleaf中遵守html5规则
+#  thymeleaf:
+#    content-type: text/html
+#    cache: false
+#    mode: HTML5
+
+#https的配置
+#server:
+#  port: 443
+#  ssl:
+#    #证书的路径.
+#    key-store:
+#    #证书密码，请修改为您自己证书的密码
+#    key-store-password:
+#    #秘钥库类型
+#    key-store-type:
+#    #证书别名
+#    key-alias:
+
+
+

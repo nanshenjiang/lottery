@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<!-- 该页面改编自http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<!--<html lang="en"   xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Welcome</title>
+    <!-- Bootstrap core CSS -->
+    <link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.1.3/css/bootstrap.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="asserts/css/dashboard.css" th:href="@{/asserts/css/dashboard.css}" rel="stylesheet">
+    <style type="text/css">
+        /* Chart.js */
+
+        @-webkit-keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        .chartjs-render-monitor {
+            -webkit-animation: chartjs-render-animation 0.001s;
+            animation: chartjs-render-animation 0.001s;
+        }
+    </style>
+</head>
+
+<body>
+<!--顶部公共区域-->
+<div th:replace="bar/topbar::topbar"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <!--左边公共区域-->
+        <div th:replace="bar/admin_sidebar::sidebar"></div>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+
+            <form th:action="@{/admin/form}" method="post">
+                <!--使用"_method"方法修改成put请求-->
+                <input type="hidden" name="_method" value="put" th:if="${userModel.user!=null}">
+                <input type="hidden" name="id" th:if="${userModel.user!=null}" th:value="${userModel.user.id}" >
+
+                <div class="form-group">
+                    <label>账号</label>
+                    <input type="text" name="username" class="form-control" placeholder="账号" th:value="${userModel.user!=null}?${userModel.user.username}">
+                </div>
+
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" name="password" class="form-control" placeholder="密码" th:value="${userModel.user!=null}?${userModel.user.password}">
+                </div>
+
+                <div class="form-group">
+                    <label  class="col-form-label">权限</label>
+                    <select name="authorityId" class="form-control form-control-chosen" data-th-placeholder="请选择">
+                        <option value="1" th:data-th-selected="${userModel.user!=null}?${#strings.contains(userModel.user.authorities[0],'ROLE_ADMIN')}">管理员</option>
+                        <option value="2" th:data-th-selected="${userModel.user!=null}?${#strings.contains(userModel.user.authorities[0],'ROLE_USER')}">奖品设置者</option>
+                        <option value="3" th:data-th-selected="${userModel.user!=null}?${#strings.contains(userModel.user.authorities[0],'ROLE_WINNER')}">获奖者</option>
+                        <option value="4" th:data-th-selected="${userModel.user!=null}?${#strings.contains(userModel.user.authorities[0],'ROLE_VISITOR')}">抽奖者</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary" th:text="${userModel.user!=null}?'修改':'添加'">添加</button>
+            </form>
+        </main>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" src="asserts/js/jquery-3.2.1.slim.min.js" th:src="@{/webjars/jquery/3.0.0/jquery.js}"></script>
+<script type="text/javascript" src="asserts/js/popper.min.js" th:src="@{/webjars/popper.js/1.14.3/popper.js}"></script>
+<script type="text/javascript" src="asserts/js/bootstrap.min.js " th:src="@{/webjars/bootstrap/4.1.3/js/bootstrap.js}"></script>
+
+<!-- Icons -->
+<script type="text/javascript" src="asserts/js/feather.min.js" th:src="@{/asserts/js/feather.min.js}"></script>
+<script>
+    feather.replace()
+</script>
+
+<!-- Graphs -->
+<script type="text/javascript" src="asserts/js/Chart.min.js" th:src="@{/asserts/js/Chart.min.js}"></script>
+<script>
+    var ctx = document.getElementById("myChart");
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            datasets: [{
+                data: [15339, 21345, 18483, 24003, 23489, 24092, 12034],
+                lineTension: 0,
+                backgroundColor: 'transparent',
+                borderColor: '#007bff',
+                borderWidth: 4,
+                pointBackgroundColor: '#007bff'
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: false
+                    }
+                }]
+            },
+            legend: {
+                display: false,
+            }
+        }
+    });
+</script>
+
+</body>
+
+</html>

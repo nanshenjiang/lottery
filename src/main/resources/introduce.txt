@@ -1,0 +1,12 @@
+版本：
+  java版本：jdk1.8
+  springboot版本：1.5.17
+
+前端框架：Bootstrap
+前端模板：thymeleaf
+
+数据库：mysql
+数据库操作：spring data jpa
+缓存：redis
+
+权限：spring security
